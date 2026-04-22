@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Air Manager - 30 Days Survival</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="phase-day">
+    <div class="bg-transition"></div>
+
+    <div class="fullscreen-screen start-screen active" id="screen-start">
+    <div class="screen-content">
+        <h1 class="game-title">🌆 City Air Manager</h1>
+        <p class="subtitle">30 Days Survival</p>
+
+        <div class="menu-buttons">
+            <button class="btn-action" onclick="startGame()">▶ เริ่มเกม</button>
+            <button class="btn-action" onclick="showHowTo()">❓ วิธีเล่น</button>
+        </div>
+    </div>
+</div>
+
+   <div class="game-dashboard" id="main-dashboard" style="display: none;">
+        
+        <div class="panel city-panel">
+            <div class="city-header">
+                <div class="day-tracker">Day <span id="day-counter">1</span> / 30</div>
+                <div class="time-tracker">🕒 <span id="time-display">12:00</span></div>
+            </div>
+            <div class="city-visual" id="city-bg">
+                </div>
+            <div class="city-footer">
+                <div class="quick-stats">
+                    <span>😊 <span id="q-approval">50</span></span>
+                    <span>💰 <span id="q-budget">450</span></span>
+                    <span>☁️ <span id="q-pm25">35</span></span>
+                    <span>🛡️ <span id="q-security">60</span></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel manage-panel">
+            <h3>จัดการเมือง</h3>
+            <div class="manage-grid">
+                <button id= "btn-pollution"class="manage-btn" onclick="openMenu('pollution')">
+                    <span class="icon">🍃</span>
+                    <div class="text">มลพิษ<small>ดูแลคุณภาพอากาศ</small></div>
+                </button>
+                <button id= "btn-security"class="manage-btn" onclick="openMenu('security')">
+                    <span class="icon">🛡️</span>
+                    <div class="text">ความปลอดภัย<small>เพิ่มความปลอดภัย</small></div>
+                </button>
+                <button id="btn-economy"class="manage-btn" onclick="openMenu('economy')">
+                    <span class="icon">💰</span>
+                    <div class="text">เศรษฐกิจ<small>บริหารรายรับ-จ่าย</small></div>
+                </button>
+                <button class="manage-btn highlight" onclick="openSchedule()">
+                    <span class="icon">🎉</span>
+                    <div class="text">อีเวนต์<small>จัดกิจกรรมพิเศษ</small></div>
+                </button>
+            </div>
+        </div>
+
+        <div class="panel time-panel">
+            <h3>ช่วงเวลา</h3>
+            <div class="time-phases">
+                <div class="phase-card" id="phase-morning">🌅 06:00<br>เช้า</div>
+                <div class="phase-card active" id="phase-day">☀️ 12:00<br>กลางวัน</div>
+                <div class="phase-card" id="phase-sunset">🌇 18:30<br>เย็น</div>
+                <div class="phase-card" id="phase-night">🌙 23:00<br>กลางคืน</div>
+            </div>
+            <button class="btn-advance-time" onclick="advanceTime()">ข้ามเวลา ⏩</button>
+        </div>
+
+        <div class="panel stat-panel">
+            <h3>รายละเอียดสเตตัส</h3>
+            <div class="stat-list">
+                <div class="stat-item">
+                    <span>😊 ความสุขประชาชน</span>
+                    <div class="bar-container"><div class="bar bg-yellow" id="bar-approval" style="width: 72%;"></div></div>
+                    <span class="val" id="val-approval">72/100</span>
+                </div>
+                <div class="stat-item">
+                    <span>💰 เงินในเมือง</span>
+                    <div class="bar-container"><div class="bar bg-blue" id="bar-budget" style="width: 45%;"></div></div>
+                    <span class="val" id="val-budget">450/1000</span>
+                </div>
+                <div class="stat-item">
+                    <span>☁️ มลพิษ (PM2.5)</span>
+                    <div class="bar-container"><div class="bar bg-gray" id="bar-pm25" style="width: 35%;"></div></div>
+                    <span class="val" id="val-pm25">35/100</span>
+                </div>
+                <div class="stat-item">
+                    <span>🛡️ ความปลอดภัย</span>
+                    <div class="bar-container"><div class="bar bg-red" id="bar-security" style="width: 60%;"></div></div>
+                    <span class="val" id="val-security">60/100</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-event">
+        <div class="modal-card">
+            <div class="modal-header">
+                <span class="badge warning">⚠️ เหตุการณ์ด่วน</span>
+                <button class="close-btn" onclick="closeEvent()">✖</button>
+            </div>
+            <h2 id="event-title">PM2.5 สูงผิดปกติ</h2>
+            <p class="modal-desc" id="event-desc">ค่าฝุ่นละอองเกินมาตรฐาน ประชาชนเริ่มไม่พอใจ</p>
+            <div class="choices-grid" id="choices-container">
+                </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-schedule">
+        <div class="modal-card modal-large">
+            <div class="modal-header">
+                <h2>จัดอีเวนต์ (Schedule Events)</h2>
+                <button class="close-btn" onclick="hideModal('modal-schedule')">✖</button>
+            </div>
+            <div class="events-grid">
+                <div class="event-card">
+                    <h4>เทศกาลดนตรี</h4>
+                    <p class="cost">💰 -100 | 😊 +20</p>
+                    <button class="btn-action" onclick="triggerAction({budget:-100, approval:20, pm25:0, security:0})">จัดเลย</button>
+                </div>
+                <div class="event-card">
+                    <h4>ปลูกต้นไม้ใหญ่</h4>
+                    <p class="cost">💰 -80 | ☁️ -15</p>
+                    <button class="btn-action" onclick="triggerAction({budget:-80, approval:0, pm25:-15, security:0})">จัดเลย</button>
+                </div>
+                <div class="event-card">
+                    <h4>เพิ่มตำรวจลาดตระเวน</h4>
+                    <p class="cost">💰 -120 | 🛡️ +25</p>
+                    <button class="btn-action" onclick="triggerAction({budget:-120, approval:0, pm25:0, security:25})">จัดเลย</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal-overlay" id="modal-summary">
+        <div class="modal-card text-center">
+            <h2>🌙 Day <span id="summary-day">12</span> สิ้นสุดแล้ว!</h2>
+            <p>สรุปสเตตัสวันนี้</p>
+            <div class="summary-stats">
+                <div>😊 <span id="sum-approval" class="text-green">+3</span></div>
+                <div>💰 <span id="sum-budget" class="text-red">-100</span></div>
+                <div>☁️ <span id="sum-pm25" class="text-green">-20</span></div>
+                <div>🛡️ <span id="sum-security" class="text-green">+5</span></div>
+            </div>
+            <button class="btn-action w-100 mt-4" onclick="nextDay()">เริ่มวันถัดไป ➔</button>
+        </div>
+    </div>
+
+    <div class="fullscreen-screen lose-screen" id="screen-gameover">
+        <div class="screen-content">
+            <h1 class="text-glow-red">GAME OVER</h1>
+            <p id="gameover-reason">ความสุข = 0 ประชาชนลุกฮือ เมืองล่มสลาย</p>
+            <button class="btn-action mt-4" onclick="location.reload()">เล่นใหม่</button>
+        </div>
+    </div>
+
+    <div class="fullscreen-screen win-screen" id="screen-victory">
+        <div class="screen-content">
+            <h1 class="text-glow-yellow">🏆 ครบ 30 วัน!</h1>
+            <p>คุณดูแลเมืองได้ยอดเยี่ยม</p>
+            <button class="btn-action mt-4" onclick="location.reload()">เล่นอีกครั้ง</button>
+        </div>
+    </div>
+    <script src="script1.js"></script>
+
+</body>
+</html>
